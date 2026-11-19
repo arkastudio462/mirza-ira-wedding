@@ -53,9 +53,17 @@ Nama tamu dibaca dari parameter `?to=` pada URL:
 ```
 https://domain-anda.com/?to=Bapak%20Joko%20Susilo
 https://domain-anda.com/?to=Ibu%20Sari%20Wulandari
+https://domain-anda.com/?to=Budi%20Santoso
 ```
 
-Nama akan tampil di halaman sampul dan otomatis terisi pada formulir ucapan. Bila parameter tidak ada, dipakai nama umum **“Bapak/Ibu/Saudara/i”**.
+Sapaan **“Bapak/Ibu/Saudara/i”** selalu tampil di halaman sampul:
+
+- `?to=Budi%20Santoso` → sapaan “Bapak/Ibu/Saudara/i”, nama “Budi Santoso”.
+- `?to=Bapak%20Joko%20Susilo` → sapaan “Bapak”, nama “Joko Susilo” (tidak dobel).
+- `?to=Sdr.%20Andi` → sapaan “Sdr.”, nama “Andi”.
+- Tanpa parameter → hanya sapaan umum, tanpa nama.
+
+Nama dari `?to=` juga otomatis terisi pada formulir ucapan. Bila parameter tidak ada, formulir dibiarkan kosong.
 
 ## Kustomisasi
 

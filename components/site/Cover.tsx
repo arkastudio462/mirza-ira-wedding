@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { parseGuest } from "@/lib/guest";
 import { wedding } from "@/lib/wedding";
 
 type Props = {
@@ -11,6 +12,8 @@ type Props = {
 };
 
 export default function Cover({ guest, opened, gone, onOpen }: Props) {
+  const { salutation, name } = parseGuest(guest);
+
   return (
     <section
       id="opening-cover"
@@ -70,12 +73,26 @@ export default function Cover({ guest, opened, gone, onOpen }: Props) {
           <p className="mb-1.5 text-xs uppercase tracking-[0.2em] text-ivory-warm/80">
             Kepada Yth.
           </p>
-          <p
-            id="guest-name-display"
-            className="break-words font-serif text-2xl font-semibold tracking-wide text-white sm:text-3xl"
-          >
-            {guest}
-          </p>
+          {name ? (
+            <>
+              <p className="font-serif text-base italic tracking-wide text-gold-light/95 sm:text-lg">
+                {salutation}
+              </p>
+              <p
+                id="guest-name-display"
+                className="mt-0.5 break-words font-serif text-2xl font-semibold tracking-wide text-white sm:text-3xl"
+              >
+                {name}
+              </p>
+            </>
+          ) : (
+            <p
+              id="guest-name-display"
+              className="break-words font-serif text-2xl font-semibold tracking-wide text-white sm:text-3xl"
+            >
+              {salutation}
+            </p>
+          )}
           <p className="mt-1.5 text-[11px] leading-relaxed text-ivory-warm/75">
             Tanpa mengurangi rasa hormat, kami mengundang Anda untuk hadir di
             hari bahagia kami.

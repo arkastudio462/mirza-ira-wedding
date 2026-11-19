@@ -6,6 +6,7 @@ import {
   Plus_Jakarta_Sans,
 } from "next/font/google";
 import "./globals.css";
+import { wedding } from "@/lib/wedding";
 
 const serif = Cormorant_Garamond({
   subsets: ["latin"],
@@ -50,9 +51,9 @@ const siteUrl =
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   alternates: { canonical: "/" },
-  title: "The Wedding of Mirza & Ira — Sabtu, 19 Desember 2026",
+  title: `The Wedding of Mirza & Ira — ${wedding.dateLabel}`,
   description:
-    "Undangan pernikahan Muhammad Mirza Fahlefi & Ira Rahmawati. Sabtu, 19 Desember 2026 di Jakarta. Dengan penuh sukacita, kami mengundang Anda untuk hadir dan memberikan doa restu.",
+    `Undangan pernikahan Muhammad Mirza Fahlefi & Ira Rahmawati. ${wedding.dateLabel} di Jakarta. Dengan penuh sukacita, kami mengundang Anda untuk hadir dan memberikan doa restu.`,
   keywords: [
     "undangan pernikahan",
     "undangan digital",
@@ -64,8 +65,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Muhammad Mirza Fahlefi" }],
   openGraph: {
     title: "The Wedding of Mirza & Ira",
-    description:
-      "Sabtu, 19 Desember 2026 — Jakarta. Kami menantikan doa dan kehadiran Anda.",
+    description: `${wedding.dateLabel} — Jakarta. Kami menantikan doa dan kehadiran Anda.`,
     url: "/",
     siteName: "The Wedding of Mirza & Ira",
     type: "website",
@@ -74,7 +74,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "The Wedding of Mirza & Ira",
-    description: "Sabtu, 19 Desember 2026 — Jakarta.",
+    description: `${wedding.dateLabel} — Jakarta.`,
   },
 };
 
