@@ -110,6 +110,7 @@ Sentuhan gerak dibuat ringan dan tidak mengganggu keterbacaan:
 | Animasi | Di mana | Cara kerja |
 | --- | --- | --- |
 | Tirai sampul + zoom foto | `Cover.tsx` | Transisi `transform` saat undangan dibuka |
+| Hero masuk | `Hero.tsx` | Setelah tirai naik, foto → nama → hitung mundur muncul bertahap (fade + naik + blur) |
 | Parallax latar hero | `Hero.tsx` | Latar bergerak lebih lambat dari konten memakai `animation-timeline: scroll(root)` |
 | Parallax foto | Hero, ayat, kisah | CSS Scroll-Driven Animation (`animation-timeline: view()`) tanpa listener scroll |
 | Reveal 3D | Semua `Reveal` | Fade + `rotateX` lembut saat masuk viewport |

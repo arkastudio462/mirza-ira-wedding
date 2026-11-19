@@ -80,7 +80,7 @@ export default function Site() {
       />
 
       <main>
-        <Hero />
+        <Hero opened={opened} />
         <Quote />
         <Couple />
         <Events />

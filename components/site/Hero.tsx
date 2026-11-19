@@ -28,7 +28,11 @@ function toGoogleDate(iso: string) {
     .replace(/\.\d{3}/, "");
 }
 
-export default function Hero() {
+type Props = {
+  opened: boolean;
+};
+
+export default function Hero({ opened }: Props) {
   const target = useRef(new Date(wedding.dateISO).getTime()).current;
   const [left, setLeft] = useState<Left | null>(null);
 
@@ -61,7 +65,9 @@ export default function Hero() {
   return (
     <header
       id="hero"
-      className="relative isolate overflow-hidden px-4 pb-16 pt-12 sm:px-6 sm:pb-24 sm:pt-16"
+      className={`relative isolate overflow-hidden px-4 pb-16 pt-12 sm:px-6 sm:pb-24 sm:pt-16 ${
+        opened ? "hero-play" : ""
+      }`}
     >
       <Image
         src="/images/adat/adat-couple-umbrella.jpg"
@@ -103,7 +109,7 @@ export default function Hero() {
 
       <div className="relative z-10 mx-auto max-w-3xl text-center">
 
-        <Reveal className="relative mx-auto mb-8 max-w-xs sm:max-w-sm">
+        <Reveal className="hero-enter relative mx-auto mb-8 max-w-xs sm:max-w-sm">
           <div className="absolute -inset-2.5 rounded-[9999px_9999px_1.25rem_1.25rem] border border-gold-champagne/55" />
           <div className="arch-frame relative aspect-[3/4] overflow-hidden bg-sage-mist shadow-luxury">
             <Image
@@ -122,7 +128,7 @@ export default function Hero() {
           </div>
         </Reveal>
 
-        <Reveal className="mt-10">
+        <Reveal className="hero-enter mt-10">
           <h2 className="font-script text-5xl leading-tight text-sage-deep sm:text-7xl">
             {wedding.monogram.groom} &amp; {wedding.monogram.bride}
           </h2>
@@ -138,7 +144,7 @@ export default function Hero() {
           </p>
         </Reveal>
 
-        <Reveal className="mx-auto mt-8 max-w-md">
+        <Reveal className="hero-enter mx-auto mt-8 max-w-md">
           <div className="grid grid-cols-4 gap-2.5 sm:gap-4">
             {units.map((unit) => (
               <div
