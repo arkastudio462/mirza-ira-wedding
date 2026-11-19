@@ -93,7 +93,7 @@ Pengaturan visual ada di:
 - `app/globals.css` — warna, tekstur botani, animasi sampul/reveal, dialog, mode cetak, dan `prefers-reduced-motion`.
 - `tailwind.config.ts` — palet `sage`/`ivory`/`gold`/`blush`, keluarga font, dan bayangan.
 - `app/layout.tsx` — metadata, font, dan tema.
-- `app/opengraph-image.jpg` — gambar pratinjau 1200×630 saat tautan dibagikan.
+- `app/opengraph-image.jpg` — gambar pratinjau 1200×630 saat tautan dibagikan (potongan dari `public/images/adat/adat-cover.jpg`, teks alternatifnya di `app/opengraph-image.alt.txt`).
 
 ## Animasi
 
