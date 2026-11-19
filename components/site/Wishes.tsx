@@ -56,6 +56,52 @@ function loadLocal(): Wish[] {
   }
 }
 
+type WishInput = Omit<Wish, "id" | "created_at">;
+
+function newLocalWish(input: WishInput): Wish {
+  return {
+    ...input,
+    id:
+      typeof crypto !== "undefined" && "randomUUID" in crypto
+        ? crypto.randomUUID()
+        : `lokal-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    created_at: new Date().toISOString(),
+  };
+}
+
+/** Ubah error Supabase menjadi petunjuk singkat yang bisa ditindaklanjuti. */
+function explainSendError(error: unknown) {
+  const err = (error ?? {}) as {
+    code?: string;
+    message?: string;
+    details?: string;
+  };
+  const text =
+    `${err.code ?? ""} ${err.message ?? ""} ${err.details ?? ""}`.toLowerCase();
+
+  if (
+    err.code === "PGRST205" ||
+    text.includes("could not find the table") ||
+    text.includes("does not exist")
+  ) {
+    return 'Tabel "ucapan" belum ada di database Supabase. Jalankan supabase/schema.sql di Supabase → SQL Editor.';
+  }
+  if (err.code === "42501" || text.includes("row-level security")) {
+    return "Kebijakan keamanan (RLS) Supabase menolak penyimpanan. Jalankan ulang bagian policy pada supabase/schema.sql.";
+  }
+  if (text.includes("invalid api key") || text.includes("jwt") || err.code === "401") {
+    return "Kunci Supabase tidak valid. Periksa NEXT_PUBLIC_SUPABASE_URL dan NEXT_PUBLIC_SUPABASE_ANON_KEY di Vercel.";
+  }
+  if (
+    text.includes("failed to fetch") ||
+    text.includes("networkerror") ||
+    text.includes("load failed")
+  ) {
+    return "Tidak bisa menghubungi Supabase. Periksa URL proyek dan koneksi server.";
+  }
+  return "Server ucapan belum bisa dihubungi.";
+}
+
 function timeAgo(iso: string) {
   const delta = Date.now() - new Date(iso).getTime();
   if (!Number.isFinite(delta)) return "";
@@ -153,6 +199,16 @@ export default function Wishes({ guest, notify }: Props) {
     };
   }, [supabase]);
 
+  const saveLocal = (input: WishInput) => {
+    const next = [newLocalWish(input), ...wishes].slice(0, 120);
+    setWishes(next);
+    try {
+      localStorage.setItem(LOCAL_KEY, JSON.stringify(next));
+    } catch {
+      /* penyimpanan penuh atau diblokir */
+    }
+  };
+
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
     const cleanName = nama.trim();
@@ -188,28 +244,24 @@ export default function Wishes({ guest, notify }: Props) {
         if (error) throw error;
         setWishes((prev) => [data as Wish, ...prev].slice(0, 120));
       } else {
-        const wish: Wish = {
-          ...payload,
-          id:
-            typeof crypto !== "undefined" && "randomUUID" in crypto
-              ? crypto.randomUUID()
-              : `lokal-${Date.now()}`,
-          created_at: new Date().toISOString(),
-        };
-        const next = [wish, ...wishes].slice(0, 120);
-        setWishes(next);
-        try {
-          localStorage.setItem(LOCAL_KEY, JSON.stringify(next));
-        } catch {
-          /* penyimpanan penuh atau diblokir */
-        }
+        saveLocal(payload);
       }
 
+      setNotice("");
       setPesan("");
       setJumlah(2);
       notify("Terima kasih! Ucapan & konfirmasi Anda telah terkirim.");
-    } catch {
-      notify("Maaf, ucapan gagal dikirim. Silakan coba lagi.");
+    } catch (error) {
+      // Jangan sampai ucapan tamu hilang: simpan di perangkat ini sambil
+      // memberi tahu penyebab server gagal.
+      console.error("[ucapan] gagal menyimpan ke Supabase:", error);
+      saveLocal(payload);
+      setNotice(
+        `${explainSendError(error)} Sementara itu, ucapan Anda tersimpan di perangkat ini.`,
+      );
+      setPesan("");
+      setJumlah(2);
+      notify("Ucapan tersimpan di perangkat ini");
     } finally {
       setSending(false);
     }
