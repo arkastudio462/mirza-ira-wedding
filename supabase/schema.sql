@@ -20,6 +20,12 @@ create index if not exists ucapan_created_at_idx
 -- Keamanan tingkat baris (RLS)
 alter table public.ucapan enable row level security;
 
+-- Izin akses tabel untuk pengunjung (anon) dan pengguna login.
+-- Policy RLS tidak berlaku tanpa GRANT ini, sehingga PostgREST membalas
+-- "permission denied for table ucapan" (kode 42501).
+grant usage on schema public to anon, authenticated;
+grant select, insert on public.ucapan to anon, authenticated;
+
 -- Semua pengunjung boleh membaca ucapan
 drop policy if exists "ucapan dibaca publik" on public.ucapan;
 create policy "ucapan dibaca publik"
@@ -40,4 +46,9 @@ create policy "ucapan ditulis publik"
   );
 
 -- Aktifkan realtime agar ucapan baru muncul tanpa reload
-alter publication supabase_realtime add table public.ucapan;
+do $$
+begin
+  alter publication supabase_realtime add table public.ucapan;
+exception
+  when duplicate_object then null; -- sudah terdaftar sebelumnya
+end $$;
