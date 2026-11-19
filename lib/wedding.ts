@@ -62,8 +62,8 @@ export const wedding = {
       color: "from-sage-deep via-sage-darker to-[#17271F]",
     },
     {
-      bank: "BANK Aladin",
-      number: "1240009827165",
+      bank: "BANK ALADIN",
+      number: "50699963200",
       holder: "Ira Rahmawati",
       color: "from-[#3B5949] via-sage-deep to-sage-darker",
     },
