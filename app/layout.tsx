@@ -37,12 +37,19 @@ const arabic = Amiri({
   display: "swap",
 });
 
+// Utamakan domain produksi (stabil) agar pratinjau tautan WhatsApp/OG
+// menunjuk ke alamat yang benar, bukan hostname deployment sementara.
 const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ||
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+  process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : "http://localhost:3000");
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
+  alternates: { canonical: "/" },
   title: "The Wedding of Mirza & Ira — Sabtu, 19 Desember 2026",
   description:
     "Undangan pernikahan Muhammad Mirza Fahlefi & Ira Rahmawati. Sabtu, 19 Desember 2026 di Jakarta. Dengan penuh sukacita, kami mengundang Anda untuk hadir dan memberikan doa restu.",
@@ -59,6 +66,8 @@ export const metadata: Metadata = {
     title: "The Wedding of Mirza & Ira",
     description:
       "Sabtu, 19 Desember 2026 — Jakarta. Kami menantikan doa dan kehadiran Anda.",
+    url: "/",
+    siteName: "The Wedding of Mirza & Ira",
     type: "website",
     locale: "id_ID",
   },
