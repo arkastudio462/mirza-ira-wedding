@@ -45,9 +45,9 @@ export const wedding = {
 
   resepsi: {
     title: "Resepsi Pernikahan",
-    time: "Pukul 11.00 – 14.00 WIB",
+    time: "Pukul 11.00 – Selesai",
     start: "2026-12-20T11:00:00+07:00",
-    end: "2026-12-20T14:00:00+07:00",
+    end: "2026-12-20T24:00:00+07:00",
     venue: "Kediaman Mempelai Pria",
     address: "Jl. Pembangunan No.103, Rt. 04/02, Kel. Serua, Kec. Ciputat, Tangerang Selatan, 15414",
     maps: "jl.pembangunan, serua, ciputat",
